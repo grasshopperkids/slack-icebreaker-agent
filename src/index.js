@@ -40,7 +40,7 @@ async function sendToSlack(icebreaker) {
 
   const result = await slack.chat.postMessage({
     channel: channelId,
-    text: `🧊 *Icebreaker Time!*\n\nBefore our 12:30 meeting, here's today's question:\n\n> ${icebreaker}\n\nShare your answer in the thread below! 👇`,
+    text: `🧊 *Icebreaker Time!*\n\nBefore our 12:30 meeting, here's today's question:\n\n> ${icebreaker}`,
     unfurl_links: false,
   });
 
