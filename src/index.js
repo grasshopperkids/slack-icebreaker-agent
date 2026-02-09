@@ -4,19 +4,36 @@ import { WebClient } from "@slack/web-api";
 const anthropic = new Anthropic();
 const slack = new WebClient(process.env.SLACK_BOT_TOKEN);
 
+const ICEBREAKER_CATEGORIES = [
+  "hypothetical superpowers or abilities",
+  "food and cooking experiences",
+  "travel and adventure",
+  "childhood nostalgia",
+  "entertainment and media",
+  "random fun preferences",
+  "dream scenarios",
+  "unpopular opinions (light-hearted)",
+  "bucket list items",
+  "workplace and productivity quirks",
+];
+
+function pickRandomCategory() {
+  return ICEBREAKER_CATEGORIES[
+    Math.floor(Math.random() * ICEBREAKER_CATEGORIES.length)
+  ];
+}
+
 const ICEBREAKER_PROMPT = `Generate a single fun, inclusive icebreaker question for a team meeting.
+
+The question MUST be in the category of: ${pickRandomCategory()}
 
 Requirements:
 - Should be appropriate for a professional workplace
 - Easy for everyone to answer (no specialized knowledge needed)
 - Encourages sharing without being too personal
 - Takes about 30 seconds to answer
-- Varied topics: could be about preferences, hypotheticals, experiences, or light opinions
-
-Examples of good icebreakers:
-- "What's a skill you'd love to learn if you had unlimited time?"
-- "If you could have dinner with any fictional character, who would it be?"
-- "What's the best meal you've had recently?"
+- Be creative and surprising — avoid generic or overused questions
+- Do NOT ask about "becoming an expert" or "learning a skill"
 
 Respond with ONLY the question, no explanation or preamble.`;
 
@@ -24,6 +41,7 @@ async function generateIcebreaker() {
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 150,
+    temperature: 1,
     messages: [
       {
         role: "user",
