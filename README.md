@@ -1,12 +1,12 @@
 # Slack Icebreaker Agent
 
-Sends a weekly icebreaker question to a Slack channel every Monday at 12:15 PM PT, 15 minutes before the 12:30 team meeting.
+Sends a weekly icebreaker question to a Slack channel every Monday before the 12:30 PM PT team meeting.
 
 Uses Claude to generate a unique question each week from a rotating set of categories (travel, food, dream scenarios, nostalgia, etc.) so questions don't repeat.
 
 ## How it works
 
-1. GitHub Actions cron triggers every Monday at 12:15 PM Pacific
+1. GitHub Actions cron triggers every Monday (19:00 UTC — around noon PT)
 2. Claude generates a fun, workplace-appropriate icebreaker question
 3. The question is posted to the configured Slack channel
 
