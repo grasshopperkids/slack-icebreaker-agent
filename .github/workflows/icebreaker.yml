@@ -2,11 +2,10 @@ name: Monday Icebreaker
 
 on:
   schedule:
-    # Run at both possible UTC times for 12:15 PT
-    # 19:15 UTC = 12:15 PDT (March-November)
-    # 20:15 UTC = 12:15 PST (November-March)
-    - cron: '15 19 * * 1'
-    - cron: '15 20 * * 1'
+    # 19:00 UTC Monday = 12:00 PM PDT / 11:00 AM PST
+    # GitHub Actions cron can be delayed 30-60 min, so the message
+    # will typically arrive between 11:00 AM–1:00 PM PT — before the 12:30 meeting.
+    - cron: '0 19 * * 1'
   workflow_dispatch: # Allow manual trigger for testing
 
 jobs:
@@ -14,41 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check if it's actually 12:15 PT
-        id: check-time
-        run: |
-          # Get current hour in Pacific Time
-          PT_HOUR=$(TZ='America/Los_Angeles' date +%H)
-          PT_MIN=$(TZ='America/Los_Angeles' date +%M)
-          PT_DAY=$(TZ='America/Los_Angeles' date +%u)  # 1=Monday
-
-          echo "Pacific Time: $(TZ='America/Los_Angeles' date)"
-          echo "Hour: $PT_HOUR, Minute: $PT_MIN, Day: $PT_DAY"
-
-          # Check if it's Monday (1) and hour is 12
-          if [ "$PT_DAY" = "1" ] && [ "$PT_HOUR" = "12" ]; then
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=false" >> $GITHUB_OUTPUT
-            echo "Skipping - not Monday 12:xx PT"
-          fi
-
       - name: Checkout repository
-        if: steps.check-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: steps.check-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
-        if: steps.check-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: npm ci
 
       - name: Generate and send icebreaker
-        if: steps.check-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
