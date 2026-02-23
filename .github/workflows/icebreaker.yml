@@ -2,10 +2,10 @@ name: Monday Icebreaker
 
 on:
   schedule:
-    # 19:00 UTC Monday = 12:00 PM PDT / 11:00 AM PST
-    # GitHub Actions cron can be delayed 30-60 min, so the message
-    # will typically arrive between 11:00 AM–1:00 PM PT — before the 12:30 meeting.
-    - cron: '0 19 * * 1'
+    # 17:00 UTC Monday = 9:00 AM PST / 10:00 AM PDT
+    # GitHub Actions cron on Mondays can be delayed 1-3 hours (peak usage day).
+    # Scheduling at 9 AM PST gives a 3.5-hour buffer before the 12:30 PM PT meeting.
+    - cron: '0 17 * * 1'
   workflow_dispatch: # Allow manual trigger for testing
 
 jobs:

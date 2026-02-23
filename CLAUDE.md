@@ -21,7 +21,7 @@ A GitHub Actions bot that posts a weekly icebreaker question to a Slack channel 
 | Layer | Choice |
 |-------|--------|
 | Runtime | Node.js |
-| Trigger | GitHub Actions cron (Mondays 19:00 UTC ≈ noon PT) |
+| Trigger | GitHub Actions cron (Mondays 17:00 UTC = 9:00 AM PST / 10:00 AM PDT) |
 | AI | Claude API (question generation) |
 | Messaging | Slack Web API (`chat:write`) |
 
@@ -56,7 +56,7 @@ For local development, copy `.env.example` to `.env` and fill in credentials.
 
 ## How It Works
 
-1. GitHub Actions cron fires every Monday at 19:00 UTC
+1. GitHub Actions cron fires every Monday at 17:00 UTC (9:00 AM PST)
 2. Script calls Claude to generate a fresh icebreaker question
 3. Question is posted to the configured Slack channel via Slack API
 
